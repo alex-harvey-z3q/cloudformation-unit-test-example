@@ -13,6 +13,17 @@ oneTimeTearDown() {
   rm -f temp.sh
 }
 
+testYamlLint() {
+  yamllint "$cloudformation_yml"
+  assertTrue "Yamllint found issues" "$?"
+}
+
+testCfnValidate() {
+  aws cloudformation validate-template \
+    --template-body file://"$cloudformation_yml"
+  assertTrue "aws cloudformation validate-template found issues" "$?"
+}
+
 testMinusN() {
   assertTrue "bash -n returned an error" "bash -n temp.sh"
 }
